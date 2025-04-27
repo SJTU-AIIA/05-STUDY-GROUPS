@@ -1,0 +1,18 @@
+{
+  "authors": [
+    "DysonFabienSun"
+  ],
+  "created": "2025-04-17T17:28:50.421630+08:00",
+  "env_vars": {},
+  "image": "ghcr.io/sjtu-aiia/dfs-rag-streamlit-demo:6.0.0",
+  "name": "dfs-rag-streamlit-demo",
+  "ports": {
+    "default": "8501:8000"
+  },
+  "tags": [
+    "rag",
+    "streamlit",
+    "llm"
+  ],
+  "version": "6.0.0"
+}
