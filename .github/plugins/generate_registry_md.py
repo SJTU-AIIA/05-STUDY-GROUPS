@@ -14,7 +14,7 @@ def generate_markdown(registry_path):
         teachers = ", ".join(f"@{a}" for a in studygroup["teachers"])
         students = ", ".join(f"@{a}" for a in studygroup["students"])
         tags = ", ".join(f"`{t}`" for t in studygroup["tags"])
-        md_content += f"| {studygroup['name']} | {teachers} | {students} | {students['version']} | {tags} | {students['last_updated'][:10]} |\n"
+        md_content += f"| {studygroup['groupname']} | {teachers} | {students} | {students['version']} | {tags} | {students['last_updated'][:10]} |\n"
 
     # Add search functionality
     md_content += """
