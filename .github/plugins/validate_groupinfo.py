@@ -3,11 +3,10 @@ from baselib import ROOT_DIR  # note: we are NOT in the root directory. Add ROOT
 
 schema = {
     "type": "object",
-    "required": ["name", "created", "tags", "image", "version"],
+    "required": ["teachers", "students", "created", "groupname", "description"],
     "properties": {
-        "name": {"type": "string"},
+        "groupname": {"type": "string"},
         "created": {"type": "string", "format": "date-time"}, # ISO 8601
-        "tags": {"type": "array"},
     }
 }    
 # Note: the schema is not complete. It only checks for the required fields and their types.
@@ -19,7 +18,7 @@ def validate(manifest_path, editor):
         with open(manifest_path) as f:
             data = json.load(f)
             jsonschema.validate(data, schema) # validates format
-        if data["teachers"] == "" or "teachers" not in data.keys():
+        if data["teachers"] in (None, [], ""):
             data["teachers"] = [editor]
         with open(manifest_path, "w") as f:
             json.dump(data, f, indent=2, sort_keys=True)   # adds author information directly
