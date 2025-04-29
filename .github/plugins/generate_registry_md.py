@@ -7,14 +7,14 @@ def generate_markdown(registry_path):
     
     md_content = """# Project Registry
 
-| Group | Teachers | Students | Version | Tags | Last Updated |
-|---------|--------|----------|---------|------|--------------|
+| Group | Teachers | Students | Tags | Created | Last Updated |
+|---------|--------|----------|------|---------|--------------|
 """
     for studygroup in data["studygroups"]:
         teachers = ", ".join(f"@{a}" for a in studygroup["teachers"])
         students = ", ".join(f"@{a}" for a in studygroup["students"])
         tags = ", ".join(f"`{t}`" for t in studygroup["tags"])
-        md_content += f"| {studygroup['groupname']} | {teachers} | {students} | {students['version']} | {tags} | {students['last_updated'][:10]} |\n"
+        md_content += f"| {studygroup['groupname']} | {teachers} | {students} | {tags} | {studygroup['created'][:10]} | {studygroup['last_updated'][:10] if 'last_updated' in studygroup else ""} |\n"
 
     # Add search functionality
     md_content += """
