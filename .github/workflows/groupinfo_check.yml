@@ -1,4 +1,4 @@
-name: Manifest Check
+name: Groupinfo Check
 on:
   push:
     paths:

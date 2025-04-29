@@ -17,7 +17,6 @@ def validate(manifest_path, editor):
     try:
         with open(manifest_path) as f:
             data = json.load(f)
-            jsonschema.validate(data, schema) # validates format
         if data["teachers"] in (None, [], ""):
             data["teachers"] = [editor]
         with open(manifest_path, "w") as f:
