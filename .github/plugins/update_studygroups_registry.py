@@ -21,7 +21,7 @@ def update_registry():
         except:
             continue
 
-    with open("_registry.json", "w") as f:
+    with open("studygroups.json", "w") as f:
         json.dump(registry, f, indent=2, sort_keys=True)
 
 if __name__ == "__main__":

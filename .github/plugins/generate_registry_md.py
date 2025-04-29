@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
     return md_content
 
 if __name__ == "__main__":
-    registry_path = Path("_registry.json")
-    md_path = Path("REGISTRY.md")
+    registry_path = Path("studygroups.json")
+    md_path = Path("STUDYGROUPS.md")
     
     md_content = generate_markdown(registry_path)
     md_path.write_text(md_content)
