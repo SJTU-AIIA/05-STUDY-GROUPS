@@ -2,7 +2,8 @@
 
 # Critical files - only admins
 /.github/ @SJTU-AIIA/admins
-/projects/.template/ @SJTU-AIIA/admins
+/.template/ @SJTU-AIIA/admins
+*/studyspace/.template/ @SJTU-AIIA/admins
 
 # The registry shouldn't be tampered with
-/projects/_registry.json @SJTU-AIIA/admins
+*/_registry.json @SJTU-AIIA/admins

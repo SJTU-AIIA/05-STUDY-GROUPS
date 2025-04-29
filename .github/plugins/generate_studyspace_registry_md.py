@@ -1,5 +1,7 @@
 import json
 from pathlib import Path
+import os
+from baselib import ROOT_DIR
 
 def generate_markdown(registry_path):
     with open(registry_path) as f:
@@ -44,9 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
     return md_content
 
 if __name__ == "__main__":
-    registry_path = Path("_registry.json")
-    md_path = Path("REGISTRY.md")
-    
-    md_content = generate_markdown(registry_path)
-    md_path.write_text(md_content)
-    print(f"Generated {md_path}")
+    for studygroup in [folder for folder in os.listdir(ROOT_DIR) if os.path.isdir(os.path.join(ROOT_DIR, folder)) and not folder.startswith(".")]:
+        registry_path = Path(f"{studygroup}/_registry.json")
+        md_path = Path(f"{studygroup}/REGISTRY.md")
+        
+        md_content = generate_markdown(registry_path)
+        md_path.write_text(md_content)
+        print(f"Generated {md_path}")

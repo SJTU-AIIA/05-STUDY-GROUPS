@@ -1,11 +1,11 @@
 {
     "teachers": [
-      "teacher1" # automatically generated
+      "teacher1"
     ],
     "students": [
-      "student1" # automatically generated
+      "student1"
     ],
     "created": "2025-04-17T17:28:50.421630+08:00",
-    "classname": "project name",
+    "groupname": "studygroup name",
     "description": "class information" 
   }

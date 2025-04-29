@@ -8,26 +8,19 @@ schema = {
         "name": {"type": "string"},
         "created": {"type": "string", "format": "date-time"}, # ISO 8601
         "tags": {"type": "array"},
-        "image": {"type": "string"},
-        "version": {"type": "string"},
-        "ports": {
-            "type": "object",
-            "patternProperties": {
-                "^\\d+:\\d+$": {"type": "string"},
-            },
-        }
     }
 }    
 # Note: the schema is not complete. It only checks for the required fields and their types.
 
-def validate(manifest_path, author):
+def validate(manifest_path, editor):
     manifest_path = ROOT_DIR / manifest_path
 
     try:
         with open(manifest_path) as f:
             data = json.load(f)
             jsonschema.validate(data, schema) # validates format
-        data["authors"] = [author]
+        if data["teachers"] == "" or "teachers" not in data.keys():
+            data["teachers"] = [editor]
         with open(manifest_path, "w") as f:
             json.dump(data, f, indent=2, sort_keys=True)   # adds author information directly
         sys.exit(0)

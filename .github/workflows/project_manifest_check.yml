@@ -2,13 +2,9 @@ name: Manifest Check
 on:
   push:
     paths:
-      - 'projects/**'
+      - '*/studyspace/**'
     branches:
       - main
-  pull_request:
-    types: [closed]
-    paths: ['projects/**']
-    branches: [main]
 
 jobs:
   validate:
@@ -16,65 +12,62 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-            token: ${{ secrets.PAT_ADMIN }}
-            fetch-depth: 2
-            ref: ${{ github.event.pull_request.merged && 'main' || github.ref }}
-  
-      - name: Check if Merged
-        if: github.event_name == 'pull_request' && github.event.action == 'closed'
-        run: |
-          if [ "${{ github.event.pull_request.merged }}" != "true" ]; then
-            echo "PR closed without merging - exiting"
-            echo "SKIP_VALIDATION=true" >> $GITHUB_ENV
-          fi
+          token: ${{ secrets.PAT_ADMIN }}
+          fetch-depth: 2
+          ref: ${{ github.event.pull_request.merged && 'main' || github.ref }}
 
       - name: Fetch Commit Author
         id: commit-author
         run: |
-          AUTHOR="${GITHUB_ACTOR}"  # Directly use the actor for a push event
+          AUTHOR="${GITHUB_ACTOR}"
           echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
       
-      - name: Determine Affected Project
-        id: affected-project
+      - name: Determine Affected Projects
+        id: affected-projects
         run: |
-          # Get all changed files under projects/
-          changed_files=$(git diff --name-only $GITHUB_SHA^ $GITHUB_SHA -- 'projects/*')
+          # Get all changed files under both paths
+          changed_files=$(git diff --name-only $GITHUB_SHA^ $GITHUB_SHA -- '*/studyspace/*')
           
-          # Extract unique project directories that have a manifest
           declare -a projects
           while IFS= read -r file; do
-            project_dir=$(echo "$file" | cut -d'/' -f2)
-            if [[ -f "projects/$project_dir/manifest.json" ]]; then
-              projects+=("$project_dir")
+            studygroup=$(echo "$file" | cut -d'/' -f1)
+            project_dir=$(echo "$file" | cut -d'/' -f3)
+            manifest_path="$studygroup/studyspace/$project_dir/manifest.json"
+            
+            if [[ -f "$manifest_path" ]]; then
+              projects+=("$manifest_path")
             fi
           done <<< "$changed_files"
 
-          # Remove duplicates and format as JSON array
+          # Format output (store full paths)
           unique_projects=($(printf "%s\n" "${projects[@]}" | sort -u))
-          echo "Found ${#unique_projects[@]} projects to validate: ${unique_projects[*]}"
+          echo "Found ${#unique_projects[@]} projects to validate:"
+          printf '%s\n' "${unique_projects[@]}"
           
-          # Set outputs
+          # Set outputs as JSON array
           if [ ${#unique_projects[@]} -eq 0 ]; then
             echo "::notice::No project manifests need validation"
             echo "SKIP_VALIDATION=true" >> $GITHUB_ENV
           else
             echo "projects=${unique_projects[*]}" >> $GITHUB_OUTPUT
+            echo "projects_json=$(jq -nc '$ARGS.positional' --args "${unique_projects[@]}")" >> $GITHUB_OUTPUT
           fi
 
       - name: Validate Manifests
-        if: steps.affected-project.outputs.projects
+        if: steps.affected-projects.outputs.projects
         run: |
-          for project in ${{ steps.affected-project.outputs.projects }}; do
-            echo "::group::Validating $project"
+          for manifest in ${{ steps.affected-projects.outputs.projects }}; do
+            project_dir=$(dirname "$manifest")
+            echo "::group::Validating $project_dir"
             python .github/plugins/validate_manifest.py \
-              "projects/$project/manifest.json" \
+              "$manifest" \
               "${{ github.actor }}"
-            git add "projects/$project/manifest.json"
+            git add "$manifest"
             echo "::endgroup::"
           done
 
       - name: Update Registry and Markdown
-        if: steps.affected-project.outputs.projects
+        if: steps.affected-projects.outputs.projects
         run: |
           python .github/plugins/update_registry.py
           python .github/plugins/generate_registry_md.py
@@ -82,7 +75,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git add projects/_registry.json
           git add projects/REGISTRY.md
-          git commit -m "[CLI] Update registry for ${{ steps.affected-project.outputs.projects }}"  # update registry only if actual files are affected
+          git commit -m "[CI] Update registry for ${{ steps.affected-projects.outputs.projects }}"
           git push
     
       - name: Skip notice
@@ -95,7 +88,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Check Team Membership
+      - name: Check If Admin
         id: check-admin
         uses: actions/github-script@v6
         with:
@@ -103,7 +96,7 @@ jobs:
             try {
               const { data: members } = await github.rest.teams.listMembersInOrg({
                 org: context.repo.owner,
-                team_slug: 'admins', // Must match your team name exactly
+                team_slug: 'admins',
               });
               const isAdmin = members.some(member => member.login === context.actor);
               core.setOutput('is-admin', isAdmin);
