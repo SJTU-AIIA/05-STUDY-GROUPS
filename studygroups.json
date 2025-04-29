@@ -1,3 +1,59 @@
 {
-  "studygroups": []
+  "studygroups": [
+    {
+      "created": "2025-04-30T00:29:36.762744+08:00",
+      "description": "class information",
+      "groupname": "testgroup6",
+      "last_updated": "2025-04-30T00:41:40.524653+08:00",
+      "students": [],
+      "tags": [],
+      "teachers": [
+        "DysonFabienSun"
+      ]
+    },
+    {
+      "created": "2025-04-30T00:33:27.326593+08:00",
+      "description": "class information",
+      "groupname": "testgroup8",
+      "last_updated": "2025-04-30T00:41:40.524698+08:00",
+      "students": [],
+      "tags": [],
+      "teachers": [
+        "DysonFabienSun"
+      ]
+    },
+    {
+      "created": "2025-04-30T00:27:44.662567+08:00",
+      "description": "class information",
+      "groupname": "testgroup5",
+      "last_updated": "2025-04-30T00:41:40.524744+08:00",
+      "students": [],
+      "tags": [],
+      "teachers": [
+        "DysonFabienSun"
+      ]
+    },
+    {
+      "created": "2025-04-30T00:30:05.090867+08:00",
+      "description": "class information",
+      "groupname": "testgroup7",
+      "last_updated": "2025-04-30T00:41:40.524779+08:00",
+      "students": [],
+      "tags": [],
+      "teachers": [
+        "DysonFabienSun"
+      ]
+    },
+    {
+      "created": "2025-04-30T00:41:34.395307+08:00",
+      "description": "class information",
+      "groupname": "testgroup9",
+      "last_updated": "2025-04-30T00:41:40.524821+08:00",
+      "students": [],
+      "tags": [],
+      "teachers": [
+        "DysonFabienSun"
+      ]
+    }
+  ]
 }
