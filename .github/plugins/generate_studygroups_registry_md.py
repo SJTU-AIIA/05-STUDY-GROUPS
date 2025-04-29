@@ -1,11 +1,11 @@
 import json
 from pathlib import Path
 
-def generate_markdown(registry_path):
+def generate_studygroups_markdown(registry_path):
     with open(registry_path) as f:
         data = json.load(f)
     
-    md_content = """# Project Registry
+    md_content = """# All Studygroups
 
 | Group | Teachers | Students | Tags | Created | Last Updated |
 |---------|--------|----------|------|---------|--------------|
@@ -47,6 +47,6 @@ if __name__ == "__main__":
     registry_path = Path("studygroups.json")
     md_path = Path("STUDYGROUPS.md")
     
-    md_content = generate_markdown(registry_path)
+    md_content = generate_studygroups_markdown(registry_path)
     md_path.write_text(md_content)
     print(f"Generated {md_path}")

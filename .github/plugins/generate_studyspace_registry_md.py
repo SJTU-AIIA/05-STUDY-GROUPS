@@ -3,20 +3,19 @@ from pathlib import Path
 import os
 from baselib import ROOT_DIR
 
-def generate_markdown(registry_path):
+def generate_projects_markdown(registry_path):
     with open(registry_path) as f:
         data = json.load(f)
     
     md_content = """# Project Registry
 
-| Group | Teachers | Students | Version | Tags | Last Updated |
-|---------|--------|----------|---------|------|--------------|
+| Project | Authors | Version | Tags | Last Updated | Links |
+|---------|---------|---------|------|--------------|-------|
 """
-    for studygroup in data["studygroups"]:
-        teachers = ", ".join(f"@{a}" for a in studygroup["teachers"])
-        students = ", ".join(f"@{a}" for a in studygroup["students"])
-        tags = ", ".join(f"`{t}`" for t in studygroup["tags"])
-        md_content += f"| {studygroup['name']} | {teachers} | {students} | {students['version']} | {tags} | {students['last_updated'][:10]} |\n"
+    for project in data["projects"]:
+        authors = ", ".join(f"@{a}" for a in project["authors"])
+        tags = ", ".join(f"`{t}`" for t in project["tags"])
+        md_content += f"| {project['name']} | {authors} | {project['version']} | {tags} | {project['last_updated'][:10]} | [Folder]({project['path']}) \| [Image]({project['image']}) |\n"
 
     # Add search functionality
     md_content += """
@@ -50,6 +49,6 @@ if __name__ == "__main__":
         registry_path = Path(f"{studygroup}/_registry.json")
         md_path = Path(f"{studygroup}/REGISTRY.md")
         
-        md_content = generate_markdown(registry_path)
+        md_content = generate_projects_markdown(registry_path)
         md_path.write_text(md_content)
         print(f"Generated {md_path}")

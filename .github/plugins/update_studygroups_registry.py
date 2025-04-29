@@ -4,7 +4,7 @@ from baselib import ROOT_DIR
 
 def update_registry():
     """
-    Keeps a registry.json file to keep track of all studygroups.
+    Keeps a studygroups.json file to keep track of all studygroups.
     """
     utc_8 = timezone(timedelta(hours=8))
 

@@ -76,11 +76,11 @@ jobs:
         if: steps.affected-project.outputs.study_groups
         run: |
           python .github/plugins/update_studygroups_registry.py
-          python .github/plugins/generate_registry_md.py
+          python .github/plugins/generate_studygroups_registry_md.py
           git config --global user.name "GitHub Bot"
           git config --global user.email "actions@github.com"
-          git add _registry.json
-          git add REGISTRY.md
+          git add studygroups.json
+          git add STUDYGROUPS.md
           git commit -m "[CLI] Update registry for ${{ steps.affected-project.outputs.study_groups }}"  # update registry only if actual files are affected
           git push
     
