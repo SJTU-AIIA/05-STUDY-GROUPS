@@ -1,0 +1,12 @@
+{
+  "name": "sunqisheng",
+  "authors": [],
+  "created": "2025-05-01T02:02:29.072839+08:00",
+  "ports": {
+    "default": "8000:8000"
+  },
+  "env_vars": {},
+  "tags": [],
+  "image": "",
+  "version": "0.0.0"
+}
