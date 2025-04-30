@@ -74,8 +74,8 @@ jobs:
           python .github/plugins/generate_studyspace_registry_md.py
           git config --global user.name "GitHub Bot"
           git config --global user.email "actions@github.com"
-          git add projects/_registry.json
-          git add projects/REGISTRY.md
+          git add _registry.json
+          git add REGISTRY.md
           git commit -m "[CI] Update registry for ${{ steps.affected-projects.outputs.projects }}"
           git push
     
