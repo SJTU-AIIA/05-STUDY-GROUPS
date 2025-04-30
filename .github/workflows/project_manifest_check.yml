@@ -66,16 +66,54 @@ jobs:
             git add "$manifest"
             echo "::endgroup::"
           done
-
+      - name: Determine Affected Study Groups
+        id: affected-study-groups
+        run: |
+          # Get all changed files
+          changed_files=$(git diff --name-only $GITHUB_SHA^ $GITHUB_SHA -- '*')
+          
+          # Extract unique study group directories that have a groupinfo.json
+          declare -a study_groups
+          while IFS= read -r file; do
+            # Extract the project directory from the changed file
+            study_group_dir=$(echo "$file" | cut -d'/' -f1)
+            if [[ -f "$study_group_dir/groupinfo.json" ]]; then
+              study_groups+=("$study_group_dir")
+            fi
+          done <<< "$changed_files"
+          # Remove duplicates and format as JSON array
+          unique_study_groups=($(printf "%s\n" "${study_groups[@]}" | sort -u))
+          echo "Found ${#unique_study_groups[@]} study groups to validate: ${unique_study_groups[*]}"
+          
+          # Set outputs
+          if [ ${#unique_study_groups[@]} -eq 0 ]; then
+            echo "::notice::No study group manifests need validation"
+            echo "SKIP_VALIDATION=true" >> $GITHUB_ENV
+          else
+            echo "study_groups=${unique_study_groups[*]}" >> $GITHUB_OUTPUT
+          fi
+      - name: Validate Group Info
+        if: steps.affected-study-groups.outputs.study_groups
+        run: |
+          for studygroup in ${{ steps.affected-study-groups.outputs.study_groups }}; do
+            echo "::group::Validating $studygroup"
+            python .github/plugins/validate_groupinfo.py \
+              "$studygroup/groupinfo.json" \
+              "${{ github.actor }}"
+            git add "$studygroup/groupinfo.json"
+            echo "::endgroup::"
+          done
       - name: Update Registry and Markdown
-        if: steps.affected-projects.outputs.projects
+        if: steps.affected-study-groups.outputs.study_groups
         run: |
           python .github/plugins/update_studyspace_registry.py
           python .github/plugins/generate_studyspace_registry_md.py
           git config --global user.name "GitHub Bot"
           git config --global user.email "actions@github.com"
-          git add _registry.json
-          git add REGISTRY.md
+          for studygroup in ${{ steps.affected-study-groups.outputs.study_groups }}; do
+            git add "$studygroup/_registry.json"
+            git add "$studygroup/REGISTRY.md"
+          done
           git commit -m "[CI] Update registry for ${{ steps.affected-projects.outputs.projects }}"
           git push
     
