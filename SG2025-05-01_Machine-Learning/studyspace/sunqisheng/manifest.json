@@ -1,12 +1,14 @@
 {
-  "name": "sunqisheng",
-  "authors": [],
+  "authors": [
+    "DysonFabienSun"
+  ],
   "created": "2025-05-01T02:07:30.075060+08:00",
+  "env_vars": {},
+  "image": "",
+  "name": "sunqisheng",
   "ports": {
     "default": "8000:8000"
   },
-  "env_vars": {},
   "tags": [],
-  "image": "",
   "version": "0.0.0"
 }
