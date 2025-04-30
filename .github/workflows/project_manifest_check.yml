@@ -26,25 +26,37 @@ jobs:
       - name: Determine Affected Projects
         id: affected-projects
         run: |
-          # Get all changed files under both paths
-          changed_files=$(git diff --name-only $GITHUB_SHA^ $GITHUB_SHA -- '*/studyspace/*')
-          
+          # Get changed and deleted files under the studyspace path
+          changed_files=$(git diff --name-status $GITHUB_SHA^ $GITHUB_SHA -- '*/studyspace/*')
           declare -a projects
-          while IFS= read -r file; do
-            studygroup=$(echo "$file" | cut -d'/' -f1)
-            project_dir=$(echo "$file" | cut -d'/' -f3)
-            manifest_path="$studygroup/studyspace/$project_dir/manifest.json"
-            
-            if [[ -f "$manifest_path" ]]; then
-              projects+=("$manifest_path")
+          while IFS= read -r line; do
+            status=$(echo "$line" | cut -d' ' -f1)
+            filepath=$(echo "$line" | cut -d' ' -f2)
+            if [[ $status == "D" ]]; then
+              # If the directory was deleted, determine its manifest path
+              studygroup=$(echo "$filepath" | cut -d'/' -f1)
+              project_dir=$(echo "$filepath" | cut -d'/' -f3)
+              manifest_path="$studygroup/studyspace/$project_dir/manifest.json"
+              
+              # Check if the manifest exists and add to projects (if we consider deletion of dirs)
+              if [[ -f "$manifest_path" ]]; then
+                projects+=("$manifest_path")
+              fi
+            elif [[ $status == "M" || $status == "A" ]]; then
+              # If the file was modified or added
+              studygroup=$(echo "$filepath" | cut -d'/' -f1)
+              project_dir=$(echo "$filepath" | cut -d'/' -f3)
+              manifest_path="$studygroup/studyspace/$project_dir/manifest.json"
+              # Only add if the manifest exists
+              if [[ -f "$manifest_path" ]]; then
+                projects+=("$manifest_path")
+              fi
             fi
           done <<< "$changed_files"
-
           # Format output (store full paths)
           unique_projects=($(printf "%s\n" "${projects[@]}" | sort -u))
           echo "Found ${#unique_projects[@]} projects to validate:"
           printf '%s\n' "${unique_projects[@]}"
-          
           # Set outputs as JSON array
           if [ ${#unique_projects[@]} -eq 0 ]; then
             echo "::notice::No project manifests need validation"
