@@ -26,42 +26,46 @@ jobs:
       - name: Determine Affected Projects
         id: affected-projects
         run: |
-          # Get changed and deleted files under the studyspace path
-          changed_files=$(git diff --name-status $GITHUB_SHA^ $GITHUB_SHA -- '*/studyspace/*')
+          # Get all changes (including directories) under studyspace
+          changed_entries=$(git diff --name-only --diff-filter=ACDMRTUXB $GITHUB_SHA^ $GITHUB_SHA -- '*/studyspace/*')
+          
           declare -a projects
-          while IFS= read -r line; do
-            status=$(echo "$line" | cut -d' ' -f1)
-            filepath=$(echo "$line" | cut -d' ' -f2)
-            if [[ $status == "D" ]]; then
-              # If the directory was deleted, determine its manifest path
-              studygroup=$(echo "$filepath" | cut -d'/' -f1)
-              project_dir=$(echo "$filepath" | cut -d'/' -f3)
+          while IFS= read -r entry; do
+            # Extract studygroup and project dir (handles nested paths)
+            path_parts=(${entry//\// })
+            studygroup=${path_parts[0]}
+            project_dir=${path_parts[2]}  # part after studyspace/
+            
+            # Only process if we have a valid project dir
+            if [[ -n "$project_dir" ]]; then
               manifest_path="$studygroup/studyspace/$project_dir/manifest.json"
               
-              # Check if the manifest exists and add to projects (if we consider deletion of dirs)
-              if [[ -f "$manifest_path" ]]; then
-                projects+=("$manifest_path")
-              fi
-            elif [[ $status == "M" || $status == "A" ]]; then
-              # If the file was modified or added
-              studygroup=$(echo "$filepath" | cut -d'/' -f1)
-              project_dir=$(echo "$filepath" | cut -d'/' -f3)
-              manifest_path="$studygroup/studyspace/$project_dir/manifest.json"
-              # Only add if the manifest exists
-              if [[ -f "$manifest_path" ]]; then
+              # Check if either:
+              # 1. This is a direct manifest change
+              # 2. The containing project has a manifest
+              if [[ "$entry" == *"manifest.json" ]] || [[ -f "$manifest_path" ]]; then
                 projects+=("$manifest_path")
               fi
             fi
-          done <<< "$changed_files"
-          # Format output (store full paths)
-          unique_projects=($(printf "%s\n" "${projects[@]}" | sort -u))
-          echo "Found ${#unique_projects[@]} projects to validate:"
-          printf '%s\n' "${unique_projects[@]}"
-          # Set outputs as JSON array
+          done <<< "$changed_entries"
+      
+          # Add detection for deleted directories
+          deleted_dirs=$(git diff --name-only --diff-filter=D $GITHUB_SHA^ $GITHUB_SHA -- '*/studyspace/*/')
+          while IFS= read -r dir; do
+            studygroup=$(echo "$dir" | cut -d'/' -f1)
+            project_dir=$(echo "$dir" | cut -d'/' -f3)
+            projects+=("$studygroup/studyspace/$project_dir/manifest.json")
+          done <<< "$deleted_dirs"
+      
+          # Remove duplicates and handle empty cases
+          unique_projects=($(printf "%s\n" "${projects[@]}" | sort -u | grep -v "^$"))
+          
           if [ ${#unique_projects[@]} -eq 0 ]; then
-            echo "::notice::No project manifests need validation"
+            echo "::notice::No studyspace projects need validation"
             echo "SKIP_VALIDATION=true" >> $GITHUB_ENV
           else
+            echo "Found ${#unique_projects[@]} projects to validate:"
+            printf ' - %s\n' "${unique_projects[@]}"
             echo "projects=${unique_projects[*]}" >> $GITHUB_OUTPUT
             echo "projects_json=$(jq -nc '$ARGS.positional' --args "${unique_projects[@]}")" >> $GITHUB_OUTPUT
           fi
