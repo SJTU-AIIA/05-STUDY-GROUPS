@@ -2,11 +2,7 @@
 
 | Group | Teachers | Students | Tags | Created | Last Updated |
 |---------|--------|----------|------|---------|--------------|
-| testgroup6 | @DysonFabienSun |  |  | 2025-04-30 | 2025-04-30 |
-| testgroup8 | @DysonFabienSun |  |  | 2025-04-30 | 2025-04-30 |
-| testgroup5 | @DysonFabienSun |  |  | 2025-04-30 | 2025-04-30 |
-| testgroup7 | @DysonFabienSun |  |  | 2025-04-30 | 2025-04-30 |
-| testgroup9 | @DysonFabienSun |  |  | 2025-04-30 | 2025-04-30 |
+| Machine-Learning | @DysonFabienSun |  |  | 2025-05-01 | 2025-05-01 |
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
