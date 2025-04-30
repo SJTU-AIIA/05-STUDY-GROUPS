@@ -66,6 +66,7 @@ jobs:
             git add "$manifest"
             echo "::endgroup::"
           done
+          
       - name: Determine Affected Study Groups
         id: affected-study-groups
         run: |
@@ -92,6 +93,7 @@ jobs:
           else
             echo "study_groups=${unique_study_groups[*]}" >> $GITHUB_OUTPUT
           fi
+
       - name: Validate Group Info
         if: steps.affected-study-groups.outputs.study_groups
         run: |
@@ -103,6 +105,7 @@ jobs:
             git add "$studygroup/groupinfo.json"
             echo "::endgroup::"
           done
+
       - name: Update Registry and Markdown
         if: steps.affected-study-groups.outputs.study_groups
         run: |
@@ -114,7 +117,7 @@ jobs:
             git add "$studygroup/_registry.json"
             git add "$studygroup/REGISTRY.md"
           done
-          git commit -m "[CI] Update registry for ${{ steps.affected-projects.outputs.projects }}"
+          git commit -m "[CLI] Update registry for ${{ steps.affected-study-groups.outputs.study_groups }}"
           git push
     
       - name: Skip notice
