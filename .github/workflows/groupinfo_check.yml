@@ -1,6 +1,12 @@
 name: Groupinfo Check
 on:
-  pull_request:
+  push:
+    paths:
+      - '**'
+      - '!.github/'
+      - '!.github/**'
+      - '**/.template/'
+      - '**/.template/**'
     branches:
       - main
 

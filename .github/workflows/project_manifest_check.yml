@@ -1,6 +1,13 @@
 name: Manifest Check
 on:
-  pull_request:
+  push:
+    paths:
+      - '*/studyspace/**'
+      - '*/studyspace/'
+      - '!.github/'
+      - '!.github/**'
+      - '**/.template/'
+      - '**/.template/**'
     branches:
       - main
 
