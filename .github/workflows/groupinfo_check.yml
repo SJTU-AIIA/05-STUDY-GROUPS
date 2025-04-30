@@ -1,11 +1,6 @@
 name: Groupinfo Check
 on:
-  push:
-    paths:
-      - '**' 
-      - '!.github/**'
-      - '!.template/**'
-      - '!**/studyspace/**'
+  pull_request:
     branches:
       - main
 

@@ -1,9 +1,6 @@
 name: Manifest Check
 on:
-  push:
-    paths:
-      - '*/studyspace/**'
-      - '!.template/studyspace/**'
+  pull_request:
     branches:
       - main
 
@@ -66,7 +63,7 @@ jobs:
             git add "$manifest"
             echo "::endgroup::"
           done
-          
+
       - name: Determine Affected Study Groups
         id: affected-study-groups
         run: |
