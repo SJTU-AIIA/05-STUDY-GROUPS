@@ -1,12 +1,15 @@
 # Contributor-owned folders
 
 # Critical files - only admins
+* @SJTU-AIIA/admins
 /.github/ @SJTU-AIIA/admins
 /.github/** @SJTU-AIIA/admins
+
+# Templates
 /.template/ @SJTU-AIIA/admins
 /.template/** @SJTU-AIIA/admins
 */studyspace/.template/ @SJTU-AIIA/admins
 */studyspace/.template/** @SJTU-AIIA/admins
 
-# The registry shouldn't be tampered with
+# Registry
 */_registry.json @SJTU-AIIA/admins
