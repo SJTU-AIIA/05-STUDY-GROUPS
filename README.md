@@ -2,7 +2,7 @@
 
 # 新手操作指南：
 
-### 初始步骤  
+## 初始步骤  
 若还未安装，安装 AIIA-CLI（共学部开发的项目管理工具）  
 ```bash  
 pip install --upgrade aiia-cli  
@@ -23,14 +23,15 @@ proj-cli sgroup self-register real_name
 
 PROJ-CLI中`proj-cli deploy`和`proj-cli run`均可正常使用。其他项目管理指令，如`proj-cli new`，`proj-cli import-repo`，`proj-cli format`等功能完备，但不建议使用。
 
-# STUDY-GROUPS功能介绍
+## STUDY-GROUPS功能介绍
 `05-STUDY-GROUPS`是建立在[02-PROJECTS](https://github.com/SJTU-AIIA/02-PROJECTS)之上的一套直观的共学系统。所有的全大写文件(`README.md`， `STUDYGROUPS.md`, `REGISTRY.md`)都做了可视化，可供同学们查阅。
 - `README.md`：studyspace中每个同学的项目文件夹中都有一个`README.md`。此文件无系统作用（有系统效力的是`_manifest.json`），但可以写自己想要别人看到的内容，如个人介绍，项目介绍，QNA等。
 - `STUDYGROUPS.md`：在根目录下。`STUDYGROUPS.md`记录了存在仓库里的所有共学小组及其信息，供同学们查阅。
 - `REGISTRY.md`：在每个studygroup下，`REGISTRY.md`记录了`/studyspace`中所有同学的项目及其信息。
 
-# STUDY-GROUPS权限
+## STUDY-GROUPS权限
 GITHUB的一大优点就是所有同学都可以看到各自的代码，相互促进与借鉴，强大的commit系统亦可以跟踪同学们的学习进度，让学习更高效。但同时，为了避免同学们误操作删除重要信息，权限开放如下：
+
 每个学习小组内登记的所有同学都可以随意更改自己的文件夹，但若老师或同学们commit中更改了其他同学文件夹中的内容，将会为该同学发出pull-request，该同学同意后才能成功更改内容。这样能避免同学们误删他人的劳动成果（当然，github的东西真的要删也不容易，历史保存的很好）
 
 本仓库还在试运营阶段。若出现bug或想提出建议，可在Github中上栏选择Issues并提出，亦可直接微信/飞书联系负责人。希望我们的共学小组可以越办越好！
