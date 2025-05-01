@@ -14,11 +14,13 @@ pip install --upgrade aiia-cli
 用git clone或Github Desktop等软件，进入 `05-STUDY-GROUPS` 仓库根目录打开命令行  
 
 ```bash
-cd SG2025-xx-xx_Your-studygroup
+cd SG2025-xx-xx_YOUR-STUDYGROUP
 ```
 cd进入你已经报名的共学小组
 
 ```bash
 proj-cli sgroup self-register real_name
 ```
-输入这行命令，名字写自己真名（例: 伯涵峥 -> bohanzheng，Emmanuel Macron -> emmanuelmacron），即可“开户”，在学习小组`/studyspace`中可查看到自己的文件夹。今后所有这个共学小组的项目都可以在github中完成，方便分享、查错、交流等。
+输入这行命令，名字写自己真名（例: 伯涵峥 -> bohanzheng，Emmanuel Macron -> emmanuelmacron），即可“开户”，在学习小组`/studyspace`中可查看到自己的文件夹。
+
+今后所有这个共学小组的项目都可以在github中完成，方便分享、查错、交流等。
