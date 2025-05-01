@@ -2,7 +2,7 @@
 
 | Group | Teachers | Students | Tags | Created | Last Updated |
 |---------|--------|----------|------|---------|--------------|
-| Machine-Learning | @DysonFabienSun |  |  | 2025-05-01 | 2025-05-01 |
+| DEEP-LEARNING | @DysonFabienSun |  |  | 2025-05-01 | 2025-05-01 |
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
