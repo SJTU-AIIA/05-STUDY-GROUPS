@@ -2,7 +2,6 @@
 
 | Project | Authors | Version | Tags | Last Updated | Links |
 |---------|---------|---------|------|--------------|-------|
-| sunqisheng | @DysonFabienSun | 0.0.0 |  | 2025-05-01 | [Folder](/home/runner/work/05-STUDY-GROUPS/05-STUDY-GROUPS/SG2025-05-01_Machine-Learning/studyspace/sunqisheng) \| [Image]() |
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

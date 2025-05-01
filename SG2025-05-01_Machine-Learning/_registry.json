@@ -1,20 +1,3 @@
 {
-  "projects": [
-    {
-      "authors": [
-        "DysonFabienSun"
-      ],
-      "created": "2025-05-01T02:07:30.075060+08:00",
-      "env_vars": {},
-      "image": "",
-      "last_updated": "2025-05-01T02:07:44.318785+08:00",
-      "name": "sunqisheng",
-      "path": "/home/runner/work/05-STUDY-GROUPS/05-STUDY-GROUPS/SG2025-05-01_Machine-Learning/studyspace/sunqisheng",
-      "ports": {
-        "default": "8000:8000"
-      },
-      "tags": [],
-      "version": "0.0.0"
-    }
-  ]
+  "projects": []
 }
