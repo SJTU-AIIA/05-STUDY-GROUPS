@@ -24,8 +24,8 @@ proj-cli sgroup self-register real_name
 PROJ-CLI中`proj-cli deploy`和`proj-cli run`均可正常使用。其他项目管理指令，如`proj-cli new`，`proj-cli import-repo`，`proj-cli format`等功能完备，但不建议使用。
 
 ## STUDY-GROUPS功能介绍
-`05-STUDY-GROUPS`是建立在[02-PROJECTS](https://github.com/SJTU-AIIA/02-PROJECTS)之上的一套直观的共学系统。所有的全大写文件(`README.md`， `STUDYGROUPS.md`, `REGISTRY.md`)都做了可视化，可供同学们查阅。
-- `README.md`：studyspace中每个同学的项目文件夹中都有一个`README.md`。此文件无系统作用（有系统效力的是`_manifest.json`），但可以写自己想要别人看到的内容，如个人介绍，项目介绍，QNA等。
+`05-STUDY-GROUPS`是建立在[02-PROJECTS](https://github.com/SJTU-AIIA/02-PROJECTS)之上的一套直观的共学系统。所有的全大写文件(`README.md`， `STUDYGROUPS.md`, `REGISTRY.md`)都做了可视化，可供同学们查阅。所有的md文件都不会被系统读取，且在每次push后会重新生成。如需修改tag，author等信息，请修改各自目录下的json文件（请勿修改`groupinfo.json`，`studygroups.json`，此类文件也会自动生成）。
+- `README.md`：studyspace中每个同学的项目文件夹中都有一个`README.md`，可以写自己想要别人看到的内容，如个人介绍，项目介绍，QNA等。
 - `STUDYGROUPS.md`：在根目录下。`STUDYGROUPS.md`记录了存在仓库里的所有共学小组及其信息，供同学们查阅。
 - `REGISTRY.md`：在每个studygroup下，`REGISTRY.md`记录了`/studyspace`中所有同学的项目及其信息。
 
